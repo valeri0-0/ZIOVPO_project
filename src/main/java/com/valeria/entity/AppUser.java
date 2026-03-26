@@ -1,6 +1,6 @@
 package com.valeria.entity;
 
-import com.valeria.model.enums.ApplicationUserRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.UUID;
@@ -14,21 +14,25 @@ import java.util.UUID;
 @Builder
 public class AppUser
 {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(unique = true, nullable = false)
-    private String username;
+    private String name;
 
-    @Column(unique = true, nullable = false)
+    @JsonIgnore
+    @Column(name = "password_hash")
+    private String passwordHash;
+
     private String email;
 
-    @Column(nullable = false)
-    private String password;
+    private String role;
 
-    @Enumerated(EnumType.STRING)
-    private ApplicationUserRole role;
+    private Boolean isAccountExpired;
 
+    private Boolean isAccountLocked;
+
+    private Boolean isCredentialsExpired;
+
+    private Boolean isDisabled;
 }

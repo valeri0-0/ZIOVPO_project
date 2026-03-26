@@ -26,6 +26,4 @@ public class RegisterDto
             message = "Пароль должен содержать: минимум 1 цифру, 1 строчную и 1 заглавную букву, 1 специальный символ (!@#$%^&+=)"
     )
     private String password;
-
-    private String role; // Роль по умолчанию
 }

@@ -39,9 +39,12 @@ public class SecurityConfig {
                 )
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/register", "/api/auth/**").permitAll()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/public-key").permitAll()
+                        .requestMatchers("/licenses").hasRole("ADMIN")
+                        .requestMatchers("/licenses/renew").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/licenses/activate").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/licenses/check").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
 
