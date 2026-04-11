@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.Signature;
 import java.util.Base64;
 
@@ -44,6 +45,34 @@ public class SigningService {
 
         } catch (Exception e) {
             throw new RuntimeException("Ошибка при создании ЭЦП", e);
+        }
+    }
+
+    public boolean verify(Object payload, String signatureBase64) {
+
+        try {
+            // 1. канонизируем payload
+            String canonicalJson = canonicalizer.canonizeJson(payload);
+            byte[] data = canonicalJson.getBytes(StandardCharsets.UTF_8);
+
+            // 2. декодируем подпись
+            byte[] signatureBytes = Base64.getDecoder().decode(signatureBase64);
+
+            // 3. получаем публичный ключ
+            PublicKey publicKey = keyStoreService.getPublicKey();
+
+            // 4. создаём verifier
+            Signature signature = Signature.getInstance("SHA256withRSA");
+            signature.initVerify(publicKey);
+
+            // 5. передаём данные
+            signature.update(data);
+
+            // 6. проверка
+            return signature.verify(signatureBytes);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Ошибка при проверке подписи", e);
         }
     }
 }
