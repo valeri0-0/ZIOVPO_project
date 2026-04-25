@@ -75,4 +75,20 @@ public class SigningService {
             throw new RuntimeException("Ошибка при проверке подписи", e);
         }
     }
+
+    // подпись готовых байт (для manifest.bin)
+    public byte[] signBytes(byte[] data) {
+        try {
+            PrivateKey privateKey = keyStoreService.getPrivateKey();
+
+            Signature signature = Signature.getInstance("SHA256withRSA");
+            signature.initSign(privateKey);
+            signature.update(data);
+
+            return signature.sign();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Ошибка при подписании byte[]", e);
+        }
+    }
 }
