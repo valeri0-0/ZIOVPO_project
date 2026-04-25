@@ -1,10 +1,7 @@
 package com.valeria.license.controller;
 
 import com.valeria.entity.AppUser;
-import com.valeria.license.dto.ActivateLicenseRequest;
-import com.valeria.license.dto.CheckLicenseRequest;
-import com.valeria.license.dto.CreateLicenseRequest;
-import com.valeria.license.dto.RenewLicenseRequest;
+import com.valeria.license.dto.*;
 import com.valeria.license.service.LicenseService;
 import com.valeria.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +32,7 @@ public class LicenseController {
 
     // Создание лицензии (admin)
     @PostMapping
-    public ResponseEntity<?> createLicense(@RequestBody CreateLicenseRequest request) {
+    public ResponseEntity<LicenseResponse> createLicense(@RequestBody CreateLicenseRequest request) {
 
         AppUser user = getCurrentUser();
 

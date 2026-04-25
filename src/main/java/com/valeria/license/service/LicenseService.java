@@ -3,6 +3,7 @@ package com.valeria.license.service;
 import com.valeria.entity.AppUser;
 import com.valeria.license.dto.ActivateLicenseRequest;
 import com.valeria.license.dto.CreateLicenseRequest;
+import com.valeria.license.dto.LicenseResponse;
 import com.valeria.license.entity.*;
 import com.valeria.license.repository.*;
 import com.valeria.repository.UserRepository;
@@ -32,7 +33,7 @@ public class LicenseService {
                         // ---CREATE---
     // Создание лицензии администратором
     @Transactional
-    public License createLicense(CreateLicenseRequest request, UUID adminId) {
+    public LicenseResponse createLicense(CreateLicenseRequest request, UUID adminId) {
 
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> new RuntimeException("продукт не найден"));
@@ -73,7 +74,14 @@ public class LicenseService {
 
         historyRepository.save(history);
 
-        return license;
+        return LicenseResponse.builder()
+                .id(license.getId())
+                .code(license.getCode())
+                .productId(license.getProduct().getId())
+                .typeId(license.getType().getId())
+                .deviceCount(license.getDeviceCount())
+                .blocked(license.getBlocked())
+                .build();
     }
                         // ---ACTIVATE---
     // Активация лицензии пользователем на устройстве
