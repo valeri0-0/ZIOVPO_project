@@ -33,3 +33,9 @@ signature:
   key-store-password: ${KEYSTORE_PASSWORD}
   key-alias: app-signing
   key-password: ${KEYSTORE_PASSWORD}
+
+minio:
+  url: http://localhost:9000
+  access-key: signature-app
+  secret-key: P@ssw0rd
+  bucket-name: signature-files
